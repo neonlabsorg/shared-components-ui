@@ -2,5 +2,5 @@
 
 module.exports = {
   files: 'src/**',
-  targets: ['vue3', 'angular'],
+  targets: ['vue3', 'angular', 'react', 'customElement'],
 };

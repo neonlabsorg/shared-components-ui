@@ -1,11 +1,16 @@
 import { useStore, Show, onMount } from '@builder.io/mitosis';
 
+/*
+*
+* Web Components use only plain strings as props
+*
+* */
 export interface CookieControlProps {
   title?: string
   description?: string
   policyText?: string
   policyUrl?: string
-  classList?: {
+  customClassList?: {
     container: string
     title: string
     description: string
@@ -14,11 +19,18 @@ export interface CookieControlProps {
     postponeCta: string
   }
   buttonGroupContent?: {
-    acceptClassList: string
-    postponeClassList: string
     acceptText: string
     postponeText: string
   }
+  containerClass?: string
+  titleClass?: string
+  descriptionClass?: string
+  policyUrlClass?: string
+  acceptCtaClass?: string
+  postponeCtaClass?: string
+  acceptText?: string
+  postponeText?: string
+  linkTarget?: boolean
 }
 
 const DEFAULTS = {
@@ -46,11 +58,11 @@ export default function CookieControl(props: CookieControlProps) {
     acceptCookies(): void {
       localStorage.setItem('cookie-usage', 'true')
 
-      this.show = false
+      state.show = false
     },
     postponeCookies(): void  {
       localStorage.setItem('cookie-expire', new Date().getTime().toString())
-      this.show = false
+      state.show = false
     },
     checkCookieAcceptancePostpone(): boolean  {
       const expireDate = localStorage.getItem('cookie-expire')
@@ -75,15 +87,16 @@ export default function CookieControl(props: CookieControlProps) {
 
   return (
       <Show when={state.show}>
-        <div class={props.classList?.container || DEFAULTS.classList.container}>
-          <h4 class={props.classList?.title || DEFAULTS.classList.title}>
+        <div class={props.customClassList?.container || props.containerClass || DEFAULTS.classList.container}>
+          <h4 class={props.customClassList?.title || props.titleClass || DEFAULTS.classList.title}>
             {props.title || DEFAULTS.title}
           </h4>
-          <p class={props.classList?.description || DEFAULTS.classList.description}>
+          <p class={props.customClassList?.description || props.descriptionClass || DEFAULTS.classList.description}>
             {props.description || DEFAULTS.description}
             <a
-              class={props.classList?.policyUrl || DEFAULTS.classList.policyUrl}
+              class={props.customClassList?.policyUrl || props.policyUrlClass || DEFAULTS.classList.policyUrl}
               href={props.policyUrl || DEFAULTS.policyUrl}
+              target={ props.linkTarget ? '_blank' : '_self' }
             >
               {props.policyText || DEFAULTS.policyText}
             </a
@@ -91,16 +104,16 @@ export default function CookieControl(props: CookieControlProps) {
           </p>
 
           <button
-            class={props.classList?.acceptCta || DEFAULTS.classList.acceptCta}
+            class={props.customClassList?.acceptCta || props.acceptCtaClass || DEFAULTS.classList.acceptCta}
             onClick={() => state.acceptCookies()}
           >
-           {(props.buttonGroupContent?.acceptText || DEFAULTS.buttonGroupContent.acceptText).toUpperCase()}
+           {(props.buttonGroupContent?.acceptText || props.acceptText || DEFAULTS.buttonGroupContent.acceptText).toUpperCase()}
         </button>
         <button
-          class={props.classList?.postponeCta || DEFAULTS.classList.postponeCta}
+          class={props.customClassList?.postponeCta || props.postponeCtaClass || DEFAULTS.classList.postponeCta}
           onClick={() => state.postponeCookies()}
         >
-          {(props.buttonGroupContent?.postponeText || DEFAULTS.buttonGroupContent.postponeText).toUpperCase()}
+          {(props.buttonGroupContent?.postponeText || props.postponeText || DEFAULTS.buttonGroupContent.postponeText).toUpperCase()}
       </button>
         </div>
       </Show>

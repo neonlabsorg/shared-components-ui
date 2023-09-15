@@ -7,13 +7,20 @@
     "build": "mitosis build",
     "pack:vue": "npm pack ./output/vue/vue3/",
     "pack:angular": "npm pack ./output/angular/",
+    "publish:vue": "npm publish ./output/vue/vue3/",
+    "publish:angular": "npm publish ./output/angular/",
+    "pack:react": "npm pack ./output/react/",
+    "publish:react": "npm publish ./output/react/",
+    "pack:web": "npm pack ./output/custom-element/",
+    "publish:web": "npm publish ./output/custom-element/",
     "lint": "eslint"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@builder.io/mitosis": "^0.0.119"
+    "@builder.io/mitosis": "^0.0.119",
+    "@builder.io/mitosis-cli": "^0.0.77"
   },
   "devDependencies": {
     "@builder.io/eslint-plugin-mitosis": "^0.0.14",

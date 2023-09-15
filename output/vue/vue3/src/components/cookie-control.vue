@@ -3,13 +3,17 @@
     <div
       :class="
         _classStringToObject(
-          classList?.container || DEFAULTS.classList.container
+          customClassList?.container ||
+            containerClass ||
+            DEFAULTS.classList.container
         )
       "
     >
       <h4
         :class="
-          _classStringToObject(classList?.title || DEFAULTS.classList.title)
+          _classStringToObject(
+            customClassList?.title || titleClass || DEFAULTS.classList.title
+          )
         "
       >
         {{ title || DEFAULTS.title }}
@@ -17,7 +21,9 @@
       <p
         :class="
           _classStringToObject(
-            classList?.description || DEFAULTS.classList.description
+            customClassList?.description ||
+              descriptionClass ||
+              DEFAULTS.classList.description
           )
         "
       >
@@ -25,10 +31,13 @@
         <a
           :class="
             _classStringToObject(
-              classList?.policyUrl || DEFAULTS.classList.policyUrl
+              customClassList?.policyUrl ||
+                policyUrlClass ||
+                DEFAULTS.classList.policyUrl
             )
           "
           :href="policyUrl || DEFAULTS.policyUrl"
+          :target="linkTarget ? '_blank' : '_self'"
         >
           {{ policyText || DEFAULTS.policyText }} </a
         >.
@@ -37,7 +46,9 @@
       <button
         :class="
           _classStringToObject(
-            classList?.acceptCta || DEFAULTS.classList.acceptCta
+            customClassList?.acceptCta ||
+              acceptCtaClass ||
+              DEFAULTS.classList.acceptCta
           )
         "
         @click="acceptCookies()"
@@ -45,6 +56,7 @@
         {{
           (
             buttonGroupContent?.acceptText ||
+            acceptText ||
             DEFAULTS.buttonGroupContent.acceptText
           ).toUpperCase()
         }}
@@ -52,7 +64,9 @@
       <button
         :class="
           _classStringToObject(
-            classList?.postponeCta || DEFAULTS.classList.postponeCta
+            customClassList?.postponeCta ||
+              postponeCtaClass ||
+              DEFAULTS.classList.postponeCta
           )
         "
         @click="postponeCookies()"
@@ -60,6 +74,7 @@
         {{
           (
             buttonGroupContent?.postponeText ||
+            postponeText ||
             DEFAULTS.buttonGroupContent.postponeText
           ).toUpperCase()
         }}
@@ -70,6 +85,12 @@
 
 <script>
 import { defineComponent } from "vue";
+
+/*
+ *
+ * Web Components use only plain strings as props
+ *
+ * */
 
 const DEFAULTS = {
   title: "We use cookies",
@@ -98,12 +119,21 @@ export default defineComponent({
   name: "cookie-control",
 
   props: [
-    "classList",
+    "customClassList",
+    "containerClass",
+    "titleClass",
     "title",
+    "descriptionClass",
     "description",
+    "policyUrlClass",
     "policyUrl",
+    "linkTarget",
     "policyText",
+    "acceptCtaClass",
     "buttonGroupContent",
+    "acceptText",
+    "postponeCtaClass",
+    "postponeText",
   ],
 
   data() {

@@ -3,6 +3,12 @@ import { CommonModule } from "@angular/common";
 
 import { Component, Input } from "@angular/core";
 
+/*
+ *
+ * Web Components use only plain strings as props
+ *
+ * */
+
 const DEFAULTS = {
   title: "We use cookies",
   description:
@@ -30,17 +36,24 @@ const DEFAULTS = {
   selector: "cookie-control, CookieControl",
   template: `
     <ng-container *ngIf="show">
-      <div [class]="classList?.container || DEFAULTS.classList.container">
-        <h4 [class]="classList?.title || DEFAULTS.classList.title">
+      <div
+        [class]="customClassList?.container || containerClass || DEFAULTS.classList.container"
+      >
+        <h4
+          [class]="customClassList?.title || titleClass || DEFAULTS.classList.title"
+        >
           {{title || DEFAULTS.title}}
         </h4>
 
-        <p [class]="classList?.description || DEFAULTS.classList.description">
+        <p
+          [class]="customClassList?.description || descriptionClass || DEFAULTS.classList.description"
+        >
           {{description || DEFAULTS.description}}
 
           <a
-            [class]="classList?.policyUrl || DEFAULTS.classList.policyUrl"
+            [class]="customClassList?.policyUrl || policyUrlClass || DEFAULTS.classList.policyUrl"
             [attr.href]="policyUrl || DEFAULTS.policyUrl"
+            [attr.target]="linkTarget ? '_blank' : '_self'"
           >
             {{policyText || DEFAULTS.policyText}}
           </a>
@@ -48,18 +61,18 @@ const DEFAULTS = {
         </p>
 
         <button
-          [class]="classList?.acceptCta || DEFAULTS.classList.acceptCta"
+          [class]="customClassList?.acceptCta || acceptCtaClass || DEFAULTS.classList.acceptCta"
           (click)="acceptCookies()"
         >
-          {{(buttonGroupContent?.acceptText ||
+          {{(buttonGroupContent?.acceptText || acceptText ||
               DEFAULTS.buttonGroupContent.acceptText).toUpperCase()}}
         </button>
 
         <button
-          [class]="classList?.postponeCta || DEFAULTS.classList.postponeCta"
+          [class]="customClassList?.postponeCta || postponeCtaClass || DEFAULTS.classList.postponeCta"
           (click)="postponeCookies()"
         >
-          {{(buttonGroupContent?.postponeText ||
+          {{(buttonGroupContent?.postponeText || postponeText ||
               DEFAULTS.buttonGroupContent.postponeText).toUpperCase()}}
         </button>
       </div>
@@ -69,12 +82,21 @@ const DEFAULTS = {
 export class CookieControl {
   DEFAULTS = DEFAULTS;
 
-  @Input() classList: any;
+  @Input() customClassList: any;
+  @Input() containerClass: any;
+  @Input() titleClass: any;
   @Input() title: any;
+  @Input() descriptionClass: any;
   @Input() description: any;
+  @Input() policyUrlClass: any;
   @Input() policyUrl: any;
+  @Input() linkTarget: any;
   @Input() policyText: any;
+  @Input() acceptCtaClass: any;
   @Input() buttonGroupContent: any;
+  @Input() acceptText: any;
+  @Input() postponeCtaClass: any;
+  @Input() postponeText: any;
 
   show = true;
   acceptCookies() {
