@@ -10,6 +10,7 @@ export interface CookieControlProps {
   description?: string
   policyText?: string
   policyUrl?: string
+  consentOptions?: string
   customClassList?: {
     container: string
     title: string
@@ -52,10 +53,26 @@ const DEFAULTS = {
   }
 }
 
+const defaultConsentOptions = [
+  'ad_storage',
+  'ad_user_data',
+  'ad_personalization',
+  'analytics_storage'
+]
+
 export default function CookieControl(props: CookieControlProps) {
   const state = useStore({
     show: true,
-    acceptCookies(): void {
+    consentCookies(optionsArray: string[]) {
+      gtag('consent', 'update', optionsArray.reduce((acc,curr)=> (acc[curr] = 'granted' , acc), {}));
+    },
+    acceptCookies(options?: string): void {
+      const optionsArray = !!options 
+        ? JSON.parse(options)
+        : defaultConsentOptions
+      
+      this.consentCookies(optionsArray)  
+
       localStorage.setItem('cookie-usage', 'true')
 
       state.show = false
@@ -104,7 +121,7 @@ export default function CookieControl(props: CookieControlProps) {
 
           <button
             class={props.customClassList?.acceptCta || props.acceptCtaClass || DEFAULTS.classList.acceptCta}
-            onClick={() => state.acceptCookies()}
+            onClick={() => state.acceptCookies(props.consentOptions)}
           >
            {(props.buttonGroupContent?.acceptText || props.acceptText || DEFAULTS.buttonGroupContent.acceptText).toUpperCase()}
         </button>

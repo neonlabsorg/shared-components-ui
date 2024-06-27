@@ -31,6 +31,12 @@ const DEFAULTS = {
     postponeText: "Ask me later",
   },
 };
+const defaultConsentOptions = [
+  "ad_storage",
+  "ad_user_data",
+  "ad_personalization",
+  "analytics_storage",
+];
 
 @Component({
   selector: "cookie-control, CookieControl",
@@ -61,7 +67,7 @@ const DEFAULTS = {
 
         <button
           [class]="customClassList?.acceptCta || acceptCtaClass || DEFAULTS.classList.acceptCta"
-          (click)="acceptCookies()"
+          (click)="acceptCookies(consentOptions)"
         >
           {{(buttonGroupContent?.acceptText || acceptText ||
               DEFAULTS.buttonGroupContent.acceptText).toUpperCase()}}
@@ -92,13 +98,25 @@ export class CookieControl {
   @Input() linkTarget: any;
   @Input() policyText: any;
   @Input() acceptCtaClass: any;
+  @Input() consentOptions: any;
   @Input() buttonGroupContent: any;
   @Input() acceptText: any;
   @Input() postponeCtaClass: any;
   @Input() postponeText: any;
 
   show = true;
-  acceptCookies() {
+  consentCookies(optionsArray) {
+    gtag(
+      "consent",
+      "update",
+      optionsArray.reduce((acc, curr) => ((acc[curr] = "granted"), acc), {})
+    );
+  }
+  acceptCookies(options) {
+    const optionsArray = !!options
+      ? JSON.parse(options)
+      : defaultConsentOptions;
+    this.consentCookies(optionsArray);
     localStorage.setItem("cookie-usage", "true");
     this.show = false;
   }

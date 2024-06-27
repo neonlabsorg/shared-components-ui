@@ -51,7 +51,7 @@
               DEFAULTS.classList.acceptCta
           )
         "
-        @click="acceptCookies()"
+        @click="acceptCookies(consentOptions)"
       >
         {{
           (
@@ -114,6 +114,12 @@ const DEFAULTS = {
     postponeText: "Ask me later",
   },
 };
+const defaultConsentOptions = [
+  "ad_storage",
+  "ad_user_data",
+  "ad_personalization",
+  "analytics_storage",
+];
 
 export default defineComponent({
   name: "cookie-control",
@@ -130,6 +136,7 @@ export default defineComponent({
     "linkTarget",
     "policyText",
     "acceptCtaClass",
+    "consentOptions",
     "buttonGroupContent",
     "acceptText",
     "postponeCtaClass",
@@ -148,7 +155,18 @@ export default defineComponent({
   },
 
   methods: {
-    acceptCookies() {
+    consentCookies(optionsArray) {
+      gtag(
+        "consent",
+        "update",
+        optionsArray.reduce((acc, curr) => ((acc[curr] = "granted"), acc), {})
+      );
+    },
+    acceptCookies(options) {
+      const optionsArray = !!options
+        ? JSON.parse(options)
+        : defaultConsentOptions;
+      this.consentCookies(optionsArray);
       localStorage.setItem("cookie-usage", "true");
       this.show = false;
     },

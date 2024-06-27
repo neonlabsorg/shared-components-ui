@@ -26,6 +26,12 @@ const DEFAULTS = {
     postponeText: "Ask me later",
   },
 };
+const defaultConsentOptions = [
+  "ad_storage",
+  "ad_user_data",
+  "ad_personalization",
+  "analytics_storage",
+];
 
 /**
  * Usage:
@@ -44,7 +50,18 @@ class CookieControl extends HTMLElement {
 
     this.state = {
       show: true,
-      acceptCookies() {
+      consentCookies(optionsArray) {
+        gtag(
+          "consent",
+          "update",
+          optionsArray.reduce((acc, curr) => ((acc[curr] = "granted"), acc), {})
+        );
+      },
+      acceptCookies(options) {
+        const optionsArray = !!options
+          ? JSON.parse(options)
+          : defaultConsentOptions;
+        this.consentCookies(optionsArray);
         localStorage.setItem("cookie-usage", "true");
         self.state.show = false;
         self.update();
@@ -85,6 +102,7 @@ class CookieControl extends HTMLElement {
       "linkTarget",
       "policyText",
       "acceptCtaClass",
+      "consentOptions",
       "buttonGroupContent",
       "acceptText",
       "postponeCtaClass",
@@ -98,7 +116,7 @@ class CookieControl extends HTMLElement {
 
     // Event handler for 'click' event on button-cookie-control-1
     this.onButtonCookieControl1Click = (event) => {
-      this.state.acceptCookies();
+      this.state.acceptCookies(this.props.consentOptions);
     };
 
     // Event handler for 'click' event on button-cookie-control-2
