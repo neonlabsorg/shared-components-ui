@@ -95,6 +95,7 @@ function CookieControl(props) {
               }
             >
               {props.description || DEFAULTS.description}
+
               <a
                 className={
                   props.customClassList?.policyUrl ||
@@ -106,7 +107,6 @@ function CookieControl(props) {
               >
                 {props.policyText || DEFAULTS.policyText}
               </a>
-              .
             </p>
 
             <button

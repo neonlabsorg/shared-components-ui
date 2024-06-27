@@ -60,11 +60,11 @@ export default function CookieControl(props: CookieControlProps) {
 
       state.show = false
     },
-    postponeCookies(): void  {
+    postponeCookies(): void {
       localStorage.setItem('cookie-expire', new Date().getTime().toString())
       state.show = false
     },
-    checkCookieAcceptancePostpone(): boolean  {
+    checkCookieAcceptancePostpone(): boolean {
       const expireDate = localStorage.getItem('cookie-expire')
       if (
         expireDate &&
@@ -99,8 +99,7 @@ export default function CookieControl(props: CookieControlProps) {
               target={ props.linkTarget ? '_blank' : '_self' }
             >
               {props.policyText || DEFAULTS.policyText}
-            </a
-            >.
+            </a>
           </p>
 
           <button

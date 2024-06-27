@@ -39,8 +39,8 @@
           :href="policyUrl || DEFAULTS.policyUrl"
           :target="linkTarget ? '_blank' : '_self'"
         >
-          {{ policyText || DEFAULTS.policyText }} </a
-        >.
+          {{ policyText || DEFAULTS.policyText }}
+        </a>
       </p>
 
       <button

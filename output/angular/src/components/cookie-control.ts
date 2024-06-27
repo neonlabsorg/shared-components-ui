@@ -57,7 +57,6 @@ const DEFAULTS = {
           >
             {{policyText || DEFAULTS.policyText}}
           </a>
-          .
         </p>
 
         <button

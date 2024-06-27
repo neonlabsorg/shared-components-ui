@@ -150,7 +150,6 @@ class CookieControl extends HTMLElement {
                 <!-- props.policyText || DEFAULTS.policyText -->
               </template>
             </a>
-            .
           </p>
       
           <button data-el="button-cookie-control-1">

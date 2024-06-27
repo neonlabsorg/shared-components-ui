@@ -1,6 +1,6 @@
 {
   "name": "neon-react-components",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Distributed components generated with Mitosis",
   "main": "src/index.js",
   "scripts": {
