@@ -138,24 +138,39 @@ export default defineComponent({
   ],
 
   data() {
-    return { show: true, DEFAULTS };
+    return { show: true, optionsArray: [], DEFAULTS };
   },
 
   mounted() {
+    this.optionsArray = !!this.consentOptions
+      ? JSON.parse(this.consentOptions)
+      : [];
     const expireDate = localStorage.getItem("cookie-expire");
     this.show =
       this.checkCookieAcceptancePostpone() ||
       (!expireDate && !localStorage.getItem("cookie-usage"));
+    if (this.optionsArray.length && localStorage.getItem("cookie-usage")) {
+      gtag(
+        "consent",
+        "update",
+        this.optionsArray.reduce(
+          (acc, curr) => ((acc[curr] = "granted"), acc),
+          {}
+        )
+      );
+    }
   },
 
   methods: {
-    acceptCookies(options) {
-      const optionsArray = !!options ? JSON.parse(options) : [];
-      if (optionsArray.length) {
+    acceptCookies() {
+      if (this.optionsArray.length) {
         gtag(
           "consent",
           "update",
-          optionsArray.reduce((acc, curr) => ((acc[curr] = "granted"), acc), {})
+          this.optionsArray.reduce(
+            (acc, curr) => ((acc[curr] = "granted"), acc),
+            {}
+          )
         );
       }
       localStorage.setItem("cookie-usage", "true");

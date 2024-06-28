@@ -56,13 +56,10 @@ const DEFAULTS = {
 export default function CookieControl(props: CookieControlProps) {
   const state = useStore({
     show: true,
-    acceptCookies(options?: string): void {
-      const optionsArray = !!options 
-        ? JSON.parse(options)
-        : []
-      
-      if (optionsArray.length) {
-        gtag('consent', 'update', optionsArray.reduce((acc,curr)=> (acc[curr] = 'granted' , acc), {}));
+    optionsArray: [],
+    acceptCookies(): void {
+      if (state.optionsArray.length) {
+        gtag('consent', 'update', state.optionsArray.reduce((acc,curr)=> (acc[curr] = 'granted' , acc), {}));
       }
 
       localStorage.setItem('cookie-usage', 'true')
@@ -88,10 +85,19 @@ export default function CookieControl(props: CookieControlProps) {
   });
 
   onMount(() => {
+    state.optionsArray = !!props.consentOptions 
+      ? JSON.parse(props.consentOptions)
+      : []
+            
     const expireDate = localStorage.getItem('cookie-expire')
+
     state.show =
       state.checkCookieAcceptancePostpone() ||
       (!expireDate && !localStorage.getItem('cookie-usage'))
+    
+    if (state.optionsArray.length && localStorage.getItem('cookie-usage')) {
+      gtag('consent', 'update', state.optionsArray.reduce((acc,curr)=> (acc[curr] = 'granted' , acc), {}));
+    }
   });
 
   return (

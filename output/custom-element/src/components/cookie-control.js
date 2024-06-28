@@ -44,13 +44,13 @@ class CookieControl extends HTMLElement {
 
     this.state = {
       show: true,
-      acceptCookies(options) {
-        const optionsArray = !!options ? JSON.parse(options) : [];
-        if (optionsArray.length) {
+      optionsArray: [],
+      acceptCookies() {
+        if (self.state.optionsArray.length) {
           gtag(
             "consent",
             "update",
-            optionsArray.reduce(
+            self.state.optionsArray.reduce(
               (acc, curr) => ((acc[curr] = "granted"), acc),
               {}
             )
@@ -207,11 +207,28 @@ class CookieControl extends HTMLElement {
 
   onMount() {
     // onMount
+    this.state.optionsArray = !!this.props.consentOptions
+      ? JSON.parse(this.props.consentOptions)
+      : [];
+    this.update();
     const expireDate = localStorage.getItem("cookie-expire");
     this.state.show =
       this.state.checkCookieAcceptancePostpone() ||
       (!expireDate && !localStorage.getItem("cookie-usage"));
     this.update();
+    if (
+      this.state.optionsArray.length &&
+      localStorage.getItem("cookie-usage")
+    ) {
+      gtag(
+        "consent",
+        "update",
+        this.state.optionsArray.reduce(
+          (acc, curr) => ((acc[curr] = "granted"), acc),
+          {}
+        )
+      );
+    }
   }
 
   onUpdate() {}
