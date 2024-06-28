@@ -114,12 +114,6 @@ const DEFAULTS = {
     postponeText: "Ask me later",
   },
 };
-const defaultConsentOptions = [
-  "ad_storage",
-  "ad_user_data",
-  "ad_personalization",
-  "analytics_storage",
-];
 
 export default defineComponent({
   name: "cookie-control",
@@ -155,18 +149,15 @@ export default defineComponent({
   },
 
   methods: {
-    consentCookies(optionsArray) {
-      gtag(
-        "consent",
-        "update",
-        optionsArray.reduce((acc, curr) => ((acc[curr] = "granted"), acc), {})
-      );
-    },
     acceptCookies(options) {
-      const optionsArray = !!options
-        ? JSON.parse(options)
-        : defaultConsentOptions;
-      this.consentCookies(optionsArray);
+      const optionsArray = !!options ? JSON.parse(options) : [];
+      if (optionsArray.length) {
+        gtag(
+          "consent",
+          "update",
+          optionsArray.reduce((acc, curr) => ((acc[curr] = "granted"), acc), {})
+        );
+      }
       localStorage.setItem("cookie-usage", "true");
       this.show = false;
     },

@@ -30,29 +30,19 @@ const DEFAULTS = {
     postponeText: "Ask me later",
   },
 };
-const defaultConsentOptions = [
-  "ad_storage",
-  "ad_user_data",
-  "ad_personalization",
-  "analytics_storage",
-];
 
 function CookieControl(props) {
   const [show, setShow] = useState(() => true);
 
-  function consentCookies(optionsArray) {
-    gtag(
-      "consent",
-      "update",
-      optionsArray.reduce((acc, curr) => ((acc[curr] = "granted"), acc), {})
-    );
-  }
-
   function acceptCookies(options) {
-    const optionsArray = !!options
-      ? JSON.parse(options)
-      : defaultConsentOptions;
-    consentCookies(optionsArray);
+    const optionsArray = !!options ? JSON.parse(options) : [];
+    if (optionsArray.length) {
+      gtag(
+        "consent",
+        "update",
+        optionsArray.reduce((acc, curr) => ((acc[curr] = "granted"), acc), {})
+      );
+    }
     localStorage.setItem("cookie-usage", "true");
     setShow(false);
   }

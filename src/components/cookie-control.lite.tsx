@@ -53,25 +53,17 @@ const DEFAULTS = {
   }
 }
 
-const defaultConsentOptions = [
-  'ad_storage',
-  'ad_user_data',
-  'ad_personalization',
-  'analytics_storage'
-]
-
 export default function CookieControl(props: CookieControlProps) {
   const state = useStore({
     show: true,
-    consentCookies(optionsArray: string[]) {
-      gtag('consent', 'update', optionsArray.reduce((acc,curr)=> (acc[curr] = 'granted' , acc), {}));
-    },
     acceptCookies(options?: string): void {
       const optionsArray = !!options 
         ? JSON.parse(options)
-        : defaultConsentOptions
+        : []
       
-      this.consentCookies(optionsArray)  
+      if (optionsArray.length) {
+        gtag('consent', 'update', optionsArray.reduce((acc,curr)=> (acc[curr] = 'granted' , acc), {}));
+      }
 
       localStorage.setItem('cookie-usage', 'true')
 
