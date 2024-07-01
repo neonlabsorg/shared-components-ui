@@ -61,7 +61,7 @@ const DEFAULTS = {
 
         <button
           [class]="customClassList?.acceptCta || acceptCtaClass || DEFAULTS.classList.acceptCta"
-          (click)="acceptCookies()"
+          (click)="acceptCookies(consentOptions)"
         >
           {{(buttonGroupContent?.acceptText || acceptText ||
               DEFAULTS.buttonGroupContent.acceptText).toUpperCase()}}
@@ -92,13 +92,25 @@ export class CookieControl {
   @Input() linkTarget: any;
   @Input() policyText: any;
   @Input() acceptCtaClass: any;
+  @Input() consentOptions: any;
   @Input() buttonGroupContent: any;
   @Input() acceptText: any;
   @Input() postponeCtaClass: any;
   @Input() postponeText: any;
 
   show = true;
+  optionsArray = [];
   acceptCookies() {
+    if (this.optionsArray.length) {
+      gtag(
+        "consent",
+        "update",
+        this.optionsArray.reduce(
+          (acc, curr) => ((acc[curr] = "granted"), acc),
+          {}
+        )
+      );
+    }
     localStorage.setItem("cookie-usage", "true");
     this.show = false;
   }
@@ -121,10 +133,23 @@ export class CookieControl {
   }
 
   ngOnInit() {
+    this.optionsArray = !!this.consentOptions
+      ? JSON.parse(this.consentOptions)
+      : [];
     const expireDate = localStorage.getItem("cookie-expire");
     this.show =
       this.checkCookieAcceptancePostpone() ||
       (!expireDate && !localStorage.getItem("cookie-usage"));
+    if (this.optionsArray.length && localStorage.getItem("cookie-usage")) {
+      gtag(
+        "consent",
+        "update",
+        this.optionsArray.reduce(
+          (acc, curr) => ((acc[curr] = "granted"), acc),
+          {}
+        )
+      );
+    }
   }
 }
 

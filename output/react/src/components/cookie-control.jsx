@@ -34,7 +34,16 @@ const DEFAULTS = {
 function CookieControl(props) {
   const [show, setShow] = useState(() => true);
 
+  const [optionsArray, setOptionsArray] = useState(() => []);
+
   function acceptCookies() {
+    if (optionsArray.length) {
+      gtag(
+        "consent",
+        "update",
+        optionsArray.reduce((acc, curr) => ((acc[curr] = "granted"), acc), {})
+      );
+    }
     localStorage.setItem("cookie-usage", "true");
     setShow(false);
   }
@@ -59,11 +68,21 @@ function CookieControl(props) {
   }
 
   useEffect(() => {
+    setOptionsArray(
+      !!props.consentOptions ? JSON.parse(props.consentOptions) : []
+    );
     const expireDate = localStorage.getItem("cookie-expire");
     setShow(
       checkCookieAcceptancePostpone() ||
         (!expireDate && !localStorage.getItem("cookie-usage"))
     );
+    if (optionsArray.length && localStorage.getItem("cookie-usage")) {
+      gtag(
+        "consent",
+        "update",
+        optionsArray.reduce((acc, curr) => ((acc[curr] = "granted"), acc), {})
+      );
+    }
   }, []);
 
   return (
@@ -115,7 +134,7 @@ function CookieControl(props) {
                 props.acceptCtaClass ||
                 DEFAULTS.classList.acceptCta
               }
-              onClick={(event) => acceptCookies()}
+              onClick={(event) => acceptCookies(props.consentOptions)}
             >
               {(
                 props.buttonGroupContent?.acceptText ||

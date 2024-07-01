@@ -44,7 +44,18 @@ class CookieControl extends HTMLElement {
 
     this.state = {
       show: true,
+      optionsArray: [],
       acceptCookies() {
+        if (self.state.optionsArray.length) {
+          gtag(
+            "consent",
+            "update",
+            self.state.optionsArray.reduce(
+              (acc, curr) => ((acc[curr] = "granted"), acc),
+              {}
+            )
+          );
+        }
         localStorage.setItem("cookie-usage", "true");
         self.state.show = false;
         self.update();
@@ -85,6 +96,7 @@ class CookieControl extends HTMLElement {
       "linkTarget",
       "policyText",
       "acceptCtaClass",
+      "consentOptions",
       "buttonGroupContent",
       "acceptText",
       "postponeCtaClass",
@@ -98,7 +110,7 @@ class CookieControl extends HTMLElement {
 
     // Event handler for 'click' event on button-cookie-control-1
     this.onButtonCookieControl1Click = (event) => {
-      this.state.acceptCookies();
+      this.state.acceptCookies(this.props.consentOptions);
     };
 
     // Event handler for 'click' event on button-cookie-control-2
@@ -195,11 +207,28 @@ class CookieControl extends HTMLElement {
 
   onMount() {
     // onMount
+    this.state.optionsArray = !!this.props.consentOptions
+      ? JSON.parse(this.props.consentOptions)
+      : [];
+    this.update();
     const expireDate = localStorage.getItem("cookie-expire");
     this.state.show =
       this.state.checkCookieAcceptancePostpone() ||
       (!expireDate && !localStorage.getItem("cookie-usage"));
     this.update();
+    if (
+      this.state.optionsArray.length &&
+      localStorage.getItem("cookie-usage")
+    ) {
+      gtag(
+        "consent",
+        "update",
+        this.state.optionsArray.reduce(
+          (acc, curr) => ((acc[curr] = "granted"), acc),
+          {}
+        )
+      );
+    }
   }
 
   onUpdate() {}
