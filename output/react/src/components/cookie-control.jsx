@@ -40,15 +40,15 @@ function CookieControl(props) {
 
   function acceptCookies() {
     if (optionsArray.length) {
-      consentListener({
-        adConsentGranted: true,
-        adUserDataConsentGranted: true,
-        adPersonalizationConsentGranted: true,
-        analyticsConsentGranted: true,
-        functionalityConsentGranted: true,
-        personalizationConsentGranted: true,
-        securityConsentGranted: true,
-      });
+      consentListener(
+        optionsArray.reduce(
+          (acc, key) => ({
+            ...acc,
+            [key]: true,
+          }),
+          {}
+        )
+      );
     }
     localStorage.setItem("cookie-usage", "true");
     setShow(false);

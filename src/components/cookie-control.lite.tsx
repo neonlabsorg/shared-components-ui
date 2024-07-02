@@ -73,15 +73,7 @@ export default function CookieControl(props: CookieControlProps) {
     consentListener: () => {},
     acceptCookies(): void {
       if (state.optionsArray.length) {
-        state.consentListener({
-          adConsentGranted: true,
-          adUserDataConsentGranted: true,
-          adPersonalizationConsentGranted: true,
-          analyticsConsentGranted: true,
-          functionalityConsentGranted: true,
-          personalizationConsentGranted: true,
-          securityConsentGranted: true
-        })
+        state.consentListener(state.optionsArray.reduce((acc, key) => ({ ...acc, [key]: true}), {}))
       }
 
       localStorage.setItem('cookie-usage', 'true')

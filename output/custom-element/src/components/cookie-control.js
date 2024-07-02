@@ -48,15 +48,15 @@ class CookieControl extends HTMLElement {
       consentListener() {},
       acceptCookies() {
         if (self.state.optionsArray.length) {
-          self.state.consentListener({
-            adConsentGranted: true,
-            adUserDataConsentGranted: true,
-            adPersonalizationConsentGranted: true,
-            analyticsConsentGranted: true,
-            functionalityConsentGranted: true,
-            personalizationConsentGranted: true,
-            securityConsentGranted: true,
-          });
+          self.state.consentListener(
+            self.state.optionsArray.reduce(
+              (acc, key) => ({
+                ...acc,
+                [key]: true,
+              }),
+              {}
+            )
+          );
         }
         localStorage.setItem("cookie-usage", "true");
         self.state.show = false;

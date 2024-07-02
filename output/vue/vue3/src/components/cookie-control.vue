@@ -159,15 +159,15 @@ export default defineComponent({
     consentListener() {},
     acceptCookies() {
       if (this.optionsArray.length) {
-        this.consentListener({
-          adConsentGranted: true,
-          adUserDataConsentGranted: true,
-          adPersonalizationConsentGranted: true,
-          analyticsConsentGranted: true,
-          functionalityConsentGranted: true,
-          personalizationConsentGranted: true,
-          securityConsentGranted: true,
-        });
+        this.consentListener(
+          this.optionsArray.reduce(
+            (acc, key) => ({
+              ...acc,
+              [key]: true,
+            }),
+            {}
+          )
+        );
       }
       localStorage.setItem("cookie-usage", "true");
       this.show = false;
