@@ -61,7 +61,7 @@ const DEFAULTS = {
 
         <button
           [class]="customClassList?.acceptCta || acceptCtaClass || DEFAULTS.classList.acceptCta"
-          (click)="acceptCookies(consentOptions)"
+          (click)="acceptCookies()"
         >
           {{(buttonGroupContent?.acceptText || acceptText ||
               DEFAULTS.buttonGroupContent.acceptText).toUpperCase()}}
@@ -92,24 +92,26 @@ export class CookieControl {
   @Input() linkTarget: any;
   @Input() policyText: any;
   @Input() acceptCtaClass: any;
-  @Input() consentOptions: any;
   @Input() buttonGroupContent: any;
   @Input() acceptText: any;
   @Input() postponeCtaClass: any;
   @Input() postponeText: any;
+  @Input() consentOptions: any;
 
   show = true;
   optionsArray = [];
+  consentListener() {}
   acceptCookies() {
     if (this.optionsArray.length) {
-      gtag(
-        "consent",
-        "update",
-        this.optionsArray.reduce(
-          (acc, curr) => ((acc[curr] = "granted"), acc),
-          {}
-        )
-      );
+      this.consentListener({
+        adConsentGranted: true,
+        adUserDataConsentGranted: true,
+        adPersonalizationConsentGranted: true,
+        analyticsConsentGranted: true,
+        functionalityConsentGranted: true,
+        personalizationConsentGranted: true,
+        securityConsentGranted: true,
+      });
     }
     localStorage.setItem("cookie-usage", "true");
     this.show = false;
@@ -133,6 +135,10 @@ export class CookieControl {
   }
 
   ngOnInit() {
+    // @ts-ignore: Google tag manager callback for consent update
+    window.neonConsentListener = (callback) => {
+      this.consentListener = callback;
+    };
     this.optionsArray = !!this.consentOptions
       ? JSON.parse(this.consentOptions)
       : [];
@@ -140,16 +146,6 @@ export class CookieControl {
     this.show =
       this.checkCookieAcceptancePostpone() ||
       (!expireDate && !localStorage.getItem("cookie-usage"));
-    if (this.optionsArray.length && localStorage.getItem("cookie-usage")) {
-      gtag(
-        "consent",
-        "update",
-        this.optionsArray.reduce(
-          (acc, curr) => ((acc[curr] = "granted"), acc),
-          {}
-        )
-      );
-    }
   }
 }
 
