@@ -36,13 +36,19 @@ function CookieControl(props) {
 
   const [optionsArray, setOptionsArray] = useState(() => []);
 
+  function consentListener() {}
+
   function acceptCookies() {
     if (optionsArray.length) {
-      gtag(
-        "consent",
-        "update",
-        optionsArray.reduce((acc, curr) => ((acc[curr] = "granted"), acc), {})
-      );
+      consentListener({
+        adConsentGranted: true,
+        adUserDataConsentGranted: true,
+        adPersonalizationConsentGranted: true,
+        analyticsConsentGranted: true,
+        functionalityConsentGranted: true,
+        personalizationConsentGranted: true,
+        securityConsentGranted: true,
+      });
     }
     localStorage.setItem("cookie-usage", "true");
     setShow(false);
@@ -68,6 +74,10 @@ function CookieControl(props) {
   }
 
   useEffect(() => {
+    // @ts-ignore: Google tag manager callback for consent update
+    window.neonConsentListener = (callback) => {
+      setConsentListener(callback);
+    };
     setOptionsArray(
       !!props.consentOptions ? JSON.parse(props.consentOptions) : []
     );
@@ -76,13 +86,6 @@ function CookieControl(props) {
       checkCookieAcceptancePostpone() ||
         (!expireDate && !localStorage.getItem("cookie-usage"))
     );
-    if (optionsArray.length && localStorage.getItem("cookie-usage")) {
-      gtag(
-        "consent",
-        "update",
-        optionsArray.reduce((acc, curr) => ((acc[curr] = "granted"), acc), {})
-      );
-    }
   }, []);
 
   return (
@@ -134,7 +137,7 @@ function CookieControl(props) {
                 props.acceptCtaClass ||
                 DEFAULTS.classList.acceptCta
               }
-              onClick={(event) => acceptCookies(props.consentOptions)}
+              onClick={(event) => acceptCookies()}
             >
               {(
                 props.buttonGroupContent?.acceptText ||

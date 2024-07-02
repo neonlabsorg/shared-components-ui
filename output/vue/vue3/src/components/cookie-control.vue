@@ -51,7 +51,7 @@
               DEFAULTS.classList.acceptCta
           )
         "
-        @click="acceptCookies(consentOptions)"
+        @click="acceptCookies()"
       >
         {{
           (
@@ -130,11 +130,11 @@ export default defineComponent({
     "linkTarget",
     "policyText",
     "acceptCtaClass",
-    "consentOptions",
     "buttonGroupContent",
     "acceptText",
     "postponeCtaClass",
     "postponeText",
+    "consentOptions",
   ],
 
   data() {
@@ -142,6 +142,10 @@ export default defineComponent({
   },
 
   mounted() {
+    // @ts-ignore: Google tag manager callback for consent update
+    window.neonConsentListener = (callback) => {
+      this.consentListener = callback;
+    };
     this.optionsArray = !!this.consentOptions
       ? JSON.parse(this.consentOptions)
       : [];
@@ -149,29 +153,21 @@ export default defineComponent({
     this.show =
       this.checkCookieAcceptancePostpone() ||
       (!expireDate && !localStorage.getItem("cookie-usage"));
-    if (this.optionsArray.length && localStorage.getItem("cookie-usage")) {
-      gtag(
-        "consent",
-        "update",
-        this.optionsArray.reduce(
-          (acc, curr) => ((acc[curr] = "granted"), acc),
-          {}
-        )
-      );
-    }
   },
 
   methods: {
+    consentListener() {},
     acceptCookies() {
       if (this.optionsArray.length) {
-        gtag(
-          "consent",
-          "update",
-          this.optionsArray.reduce(
-            (acc, curr) => ((acc[curr] = "granted"), acc),
-            {}
-          )
-        );
+        this.consentListener({
+          adConsentGranted: true,
+          adUserDataConsentGranted: true,
+          adPersonalizationConsentGranted: true,
+          analyticsConsentGranted: true,
+          functionalityConsentGranted: true,
+          personalizationConsentGranted: true,
+          securityConsentGranted: true,
+        });
       }
       localStorage.setItem("cookie-usage", "true");
       this.show = false;

@@ -34,6 +34,19 @@ export interface CookieControlProps {
   linkTarget?: boolean
 }
 
+type ConsentOptions = {
+  [key: string]: boolean
+}
+
+type StoreProps = {
+  show: boolean
+  optionsArray: string[]
+  consentListener: (options: ConsentOptions) => void
+  acceptCookies: () => void
+  postponeCookies: () => void
+  checkCookieAcceptancePostpone: () => boolean
+}
+
 const DEFAULTS = {
   title: 'We use cookies',
   description: 'If you continue browsing, we consider that you have accepted the',
@@ -54,12 +67,21 @@ const DEFAULTS = {
 }
 
 export default function CookieControl(props: CookieControlProps) {
-  const state = useStore({
+  const state = useStore<StoreProps>({
     show: true,
     optionsArray: [],
+    consentListener: () => {},
     acceptCookies(): void {
       if (state.optionsArray.length) {
-        gtag('consent', 'update', state.optionsArray.reduce((acc,curr)=> (acc[curr] = 'granted' , acc), {}));
+        state.consentListener({
+          adConsentGranted: true,
+          adUserDataConsentGranted: true,
+          adPersonalizationConsentGranted: true,
+          analyticsConsentGranted: true,
+          functionalityConsentGranted: true,
+          personalizationConsentGranted: true,
+          securityConsentGranted: true
+        })
       }
 
       localStorage.setItem('cookie-usage', 'true')
@@ -85,6 +107,11 @@ export default function CookieControl(props: CookieControlProps) {
   });
 
   onMount(() => {
+    // @ts-ignore: Google tag manager callback for consent update
+    window.neonConsentListener = (callback: (() => void)) => {
+      state.consentListener = callback
+    }
+
     state.optionsArray = !!props.consentOptions 
       ? JSON.parse(props.consentOptions)
       : []
@@ -94,10 +121,6 @@ export default function CookieControl(props: CookieControlProps) {
     state.show =
       state.checkCookieAcceptancePostpone() ||
       (!expireDate && !localStorage.getItem('cookie-usage'))
-    
-    if (state.optionsArray.length && localStorage.getItem('cookie-usage')) {
-      gtag('consent', 'update', state.optionsArray.reduce((acc,curr)=> (acc[curr] = 'granted' , acc), {}));
-    }
   });
 
   return (
@@ -119,7 +142,7 @@ export default function CookieControl(props: CookieControlProps) {
 
           <button
             class={props.customClassList?.acceptCta || props.acceptCtaClass || DEFAULTS.classList.acceptCta}
-            onClick={() => state.acceptCookies(props.consentOptions)}
+            onClick={() => state.acceptCookies()}
           >
            {(props.buttonGroupContent?.acceptText || props.acceptText || DEFAULTS.buttonGroupContent.acceptText).toUpperCase()}
         </button>
