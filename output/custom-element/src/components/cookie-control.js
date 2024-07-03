@@ -44,20 +44,18 @@ class CookieControl extends HTMLElement {
 
     this.state = {
       show: true,
-      optionsArray: [],
+      consentOptions: {
+        adConsentGranted: true,
+        adUserDataConsentGranted: true,
+        adPersonalizationConsentGranted: true,
+        analyticsConsentGranted: true,
+        functionalityConsentGranted: true,
+        personalizationConsentGranted: true,
+        securityConsentGranted: true,
+      },
       consentListener() {},
       acceptCookies() {
-        if (self.state.optionsArray.length) {
-          self.state.consentListener(
-            self.state.optionsArray.reduce(
-              (acc, key) => ({
-                ...acc,
-                [key]: true,
-              }),
-              {}
-            )
-          );
-        }
+        self.state.consentListener(self.state.consentOptions);
         localStorage.setItem("cookie-usage", "true");
         self.state.show = false;
         self.update();
@@ -102,7 +100,6 @@ class CookieControl extends HTMLElement {
       "acceptText",
       "postponeCtaClass",
       "postponeText",
-      "consentOptions",
     ];
 
     // used to keep track of all nodes created by show/for
@@ -214,10 +211,6 @@ class CookieControl extends HTMLElement {
       this.state.consentListener = callback;
       this.update();
     };
-    this.state.optionsArray = !!this.props.consentOptions
-      ? JSON.parse(this.props.consentOptions)
-      : [];
-    this.update();
     const expireDate = localStorage.getItem("cookie-expire");
     this.state.show =
       this.state.checkCookieAcceptancePostpone() ||

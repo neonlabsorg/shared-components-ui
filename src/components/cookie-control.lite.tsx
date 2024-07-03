@@ -10,7 +10,6 @@ export interface CookieControlProps {
   description?: string
   policyText?: string
   policyUrl?: string
-  consentOptions?: string
   customClassList?: {
     container: string
     title: string
@@ -40,7 +39,7 @@ type ConsentOptions = {
 
 type StoreProps = {
   show: boolean
-  optionsArray: string[]
+  consentOptions: ConsentOptions
   consentListener: (options: ConsentOptions) => void
   acceptCookies: () => void
   postponeCookies: () => void
@@ -69,12 +68,18 @@ const DEFAULTS = {
 export default function CookieControl(props: CookieControlProps) {
   const state = useStore<StoreProps>({
     show: true,
-    optionsArray: [],
+    consentOptions: {
+      adConsentGranted: true,
+      adUserDataConsentGranted: true,
+      adPersonalizationConsentGranted: true,
+      analyticsConsentGranted: true,
+      functionalityConsentGranted: true,
+      personalizationConsentGranted: true,
+      securityConsentGranted: true
+    },
     consentListener: () => {},
     acceptCookies(): void {
-      if (state.optionsArray.length) {
-        state.consentListener(state.optionsArray.reduce((acc, key) => ({ ...acc, [key]: true}), {}))
-      }
+      state.consentListener(state.consentOptions)
 
       localStorage.setItem('cookie-usage', 'true')
 
@@ -103,10 +108,6 @@ export default function CookieControl(props: CookieControlProps) {
     window.neonConsentListener = (callback: (() => void)) => {
       state.consentListener = callback
     }
-
-    state.optionsArray = !!props.consentOptions 
-      ? JSON.parse(props.consentOptions)
-      : []
             
     const expireDate = localStorage.getItem('cookie-expire')
 

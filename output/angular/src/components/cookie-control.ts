@@ -96,23 +96,20 @@ export class CookieControl {
   @Input() acceptText: any;
   @Input() postponeCtaClass: any;
   @Input() postponeText: any;
-  @Input() consentOptions: any;
 
   show = true;
-  optionsArray = [];
+  consentOptions = {
+    adConsentGranted: true,
+    adUserDataConsentGranted: true,
+    adPersonalizationConsentGranted: true,
+    analyticsConsentGranted: true,
+    functionalityConsentGranted: true,
+    personalizationConsentGranted: true,
+    securityConsentGranted: true,
+  };
   consentListener() {}
   acceptCookies() {
-    if (this.optionsArray.length) {
-      this.consentListener(
-        this.optionsArray.reduce(
-          (acc, key) => ({
-            ...acc,
-            [key]: true,
-          }),
-          {}
-        )
-      );
-    }
+    this.consentListener(this.consentOptions);
     localStorage.setItem("cookie-usage", "true");
     this.show = false;
   }
@@ -139,9 +136,6 @@ export class CookieControl {
     window.neonConsentListener = (callback) => {
       this.consentListener = callback;
     };
-    this.optionsArray = !!this.consentOptions
-      ? JSON.parse(this.consentOptions)
-      : [];
     const expireDate = localStorage.getItem("cookie-expire");
     this.show =
       this.checkCookieAcceptancePostpone() ||

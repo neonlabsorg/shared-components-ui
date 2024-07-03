@@ -134,11 +134,22 @@ export default defineComponent({
     "acceptText",
     "postponeCtaClass",
     "postponeText",
-    "consentOptions",
   ],
 
   data() {
-    return { show: true, optionsArray: [], DEFAULTS };
+    return {
+      show: true,
+      consentOptions: {
+        adConsentGranted: true,
+        adUserDataConsentGranted: true,
+        adPersonalizationConsentGranted: true,
+        analyticsConsentGranted: true,
+        functionalityConsentGranted: true,
+        personalizationConsentGranted: true,
+        securityConsentGranted: true,
+      },
+      DEFAULTS,
+    };
   },
 
   mounted() {
@@ -146,9 +157,6 @@ export default defineComponent({
     window.neonConsentListener = (callback) => {
       this.consentListener = callback;
     };
-    this.optionsArray = !!this.consentOptions
-      ? JSON.parse(this.consentOptions)
-      : [];
     const expireDate = localStorage.getItem("cookie-expire");
     this.show =
       this.checkCookieAcceptancePostpone() ||
@@ -158,17 +166,7 @@ export default defineComponent({
   methods: {
     consentListener() {},
     acceptCookies() {
-      if (this.optionsArray.length) {
-        this.consentListener(
-          this.optionsArray.reduce(
-            (acc, key) => ({
-              ...acc,
-              [key]: true,
-            }),
-            {}
-          )
-        );
-      }
+      this.consentListener(this.consentOptions);
       localStorage.setItem("cookie-usage", "true");
       this.show = false;
     },
