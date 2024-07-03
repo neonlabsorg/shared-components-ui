@@ -34,22 +34,20 @@ const DEFAULTS = {
 function CookieControl(props) {
   const [show, setShow] = useState(() => true);
 
-  const [optionsArray, setOptionsArray] = useState(() => []);
+  const [consentOptions, setConsentOptions] = useState(() => ({
+    adConsentGranted: true,
+    adUserDataConsentGranted: true,
+    adPersonalizationConsentGranted: true,
+    analyticsConsentGranted: true,
+    functionalityConsentGranted: true,
+    personalizationConsentGranted: true,
+    securityConsentGranted: true,
+  }));
 
   function consentListener() {}
 
   function acceptCookies() {
-    if (optionsArray.length) {
-      consentListener(
-        optionsArray.reduce(
-          (acc, key) => ({
-            ...acc,
-            [key]: true,
-          }),
-          {}
-        )
-      );
-    }
+    consentListener(consentOptions);
     localStorage.setItem("cookie-usage", "true");
     setShow(false);
   }
@@ -78,9 +76,6 @@ function CookieControl(props) {
     window.neonConsentListener = (callback) => {
       setConsentListener(callback);
     };
-    setOptionsArray(
-      !!props.consentOptions ? JSON.parse(props.consentOptions) : []
-    );
     const expireDate = localStorage.getItem("cookie-expire");
     setShow(
       checkCookieAcceptancePostpone() ||
