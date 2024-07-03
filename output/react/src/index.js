@@ -1,2 +1,3 @@
 import CookieControl from "./components/cookie-control";
-export { CookieControl }
+import StubNotFound from "./components/stub-not-found";
+export { CookieControl, StubNotFound }

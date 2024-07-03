@@ -1,2 +1,3 @@
 import CookieControl from "./components/cookie-control.vue";
-export { CookieControl }
+import StubNotFound from "./components/stub-not-found.vue";
+export { CookieControl, StubNotFound }
