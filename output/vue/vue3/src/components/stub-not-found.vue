@@ -399,6 +399,11 @@ export default defineComponent({
   margin-top: 5.5rem;
   margin-bottom: 0.75rem;
 }
+@media (max-width: 600px) {
+  .div {
+    height: 96rem;
+  }
+}
 .div-2 {
   display: flex;
   flex-direction: column;
@@ -409,6 +414,11 @@ export default defineComponent({
   margin-bottom: 6rem;
   align-items: center;
 }
+@media (max-width: 600px) {
+  .div-3 {
+    margin-bottom: 3rem;
+  }
+}
 .div-4 {
   display: flex;
   flex-direction: column;
@@ -416,6 +426,12 @@ export default defineComponent({
   max-width: 50rem;
   margin-bottom: 3rem;
   align-items: center;
+}
+@media (max-width: 992px) {
+  .div-4 {
+    padding: 0 1.5rem;
+    text-align: center;
+  }
 }
 .h6 {
   color: #cecfd2;
@@ -426,6 +442,11 @@ export default defineComponent({
   font-weight: 600;
   line-height: 4.5rem;
   color: #f5f5f6;
+}
+@media (max-width: 600px) {
+  .h1 {
+    font-size: 2.5rem;
+  }
 }
 .div-5 {
   display: flex;
@@ -459,6 +480,17 @@ export default defineComponent({
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
+}
+@media (max-width: 992px) {
+  .div-7 {
+    padding: 0 1.5rem;
+  }
+}
+@media (max-width: 600px) {
+  .div-7 {
+    display: flex;
+    flex-direction: column;
+  }
 }
 .div-8 {
   display: flex;

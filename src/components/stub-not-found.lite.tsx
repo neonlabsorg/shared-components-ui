@@ -94,7 +94,10 @@ export default function StubNotFound(props: NotFoundPageProps) {
         justifyContent: 'center', 
         alignItems: 'center',
         marginTop: '5.5rem',
-        marginBottom: '0.75rem'
+        marginBottom: '0.75rem',
+        '@media (max-width: 600px)': {
+          height: '96rem'
+        }
       }}
     >
       <div css={{ display: 'flex', flexDirection: 'column' }}>
@@ -102,7 +105,10 @@ export default function StubNotFound(props: NotFoundPageProps) {
           display: 'flex', 
           flexDirection: 'column', 
           marginBottom: '6rem', 
-          alignItems: 'center' 
+          alignItems: 'center',
+          '@media (max-width: 600px)': {
+            marginBottom: '3rem'
+          }
         }}>
           <div 
             class={props.customClassList?.heading?.container || props.headingContainerClass || ''}
@@ -112,7 +118,11 @@ export default function StubNotFound(props: NotFoundPageProps) {
               gap: '0.75rem',
               maxWidth: '50rem',
               marginBottom: '3rem',
-              alignItems: 'center'
+              alignItems: 'center',
+              '@media (max-width: 992px)': {
+                padding: '0 1.5rem',
+                textAlign: 'center',
+              },
             }}
           >
             <h6 
@@ -127,6 +137,9 @@ export default function StubNotFound(props: NotFoundPageProps) {
                 fontWeight: '600',
                 lineHeight: '4.5rem', 
                 color: '#F5F5F6',
+                '@media (max-width: 600px)': {
+                  fontSize: '2.5rem',
+                }
               }}
             >
               {DEFAULTS.heading.title}
@@ -172,7 +185,18 @@ export default function StubNotFound(props: NotFoundPageProps) {
             </div>
           </div>
         </div> 
-        <div css={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem'}}>
+        <div css={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(3, 1fr)', 
+          gap: '2rem',
+          '@media (max-width: 992px)': {
+            padding: '0 1.5rem',
+          },
+          '@media (max-width: 600px)': {
+            display: 'flex',
+            flexDirection: 'column',
+          }
+        }}>
           <div 
             class={props.customClassList?.card?.container || props.cardContainerClass || ''} 
             css={{ 

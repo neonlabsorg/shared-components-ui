@@ -350,6 +350,11 @@ class StubNotFound extends HTMLElement {
           margin-top: 5.5rem;
           margin-bottom: 0.75rem;
         }
+        @media (max-width: 600px) {
+          .div-stub-not-found {
+            height: 96rem;
+          }
+        }
         .div-stub-not-found-2 {
           display: flex;
           flex-direction: column;
@@ -360,6 +365,11 @@ class StubNotFound extends HTMLElement {
           margin-bottom: 6rem;
           align-items: center;
         }
+        @media (max-width: 600px) {
+          .div-stub-not-found-3 {
+            margin-bottom: 3rem;
+          }
+        }
         .div-stub-not-found-4 {
           display: flex;
           flex-direction: column;
@@ -367,6 +377,12 @@ class StubNotFound extends HTMLElement {
           max-width: 50rem;
           margin-bottom: 3rem;
           align-items: center;
+        }
+        @media (max-width: 992px) {
+          .div-stub-not-found-4 {
+            padding: 0 1.5rem;
+            text-align: center;
+          }
         }
         .h6-stub-not-found {
           color: #cecfd2;
@@ -377,6 +393,11 @@ class StubNotFound extends HTMLElement {
           font-weight: 600;
           line-height: 4.5rem;
           color: #f5f5f6;
+        }
+        @media (max-width: 600px) {
+          .h1-stub-not-found {
+            font-size: 2.5rem;
+          }
         }
         .div-stub-not-found-5 {
           display: flex;
@@ -410,6 +431,17 @@ class StubNotFound extends HTMLElement {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 2rem;
+        }
+        @media (max-width: 992px) {
+          .div-stub-not-found-7 {
+            padding: 0 1.5rem;
+          }
+        }
+        @media (max-width: 600px) {
+          .div-stub-not-found-7 {
+            display: flex;
+            flex-direction: column;
+          }
         }
         .div-stub-not-found-8 {
           display: flex;
