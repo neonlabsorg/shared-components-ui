@@ -36,12 +36,12 @@ const DEFAULTS = {
       linkHref: "",
     },
   },
-  redirectUrl: "/",
+  homeUrl: "/",
 };
 
 function StubNotFound(props) {
   function goHome() {
-    window.location.href = props.homeUrl || "/";
+    window.location.href = props.homeUrl || DEFAULTS.homeUrl;
   }
 
   function goBack() {
@@ -186,7 +186,7 @@ function StubNotFound(props) {
                   props.cardLinkClass ||
                   "" + " a"
                 }
-                href={props.docsCardLink || "/"}
+                href={props.docsCardLink || DEFAULTS.homeUrl}
               >
                 <span>{DEFAULTS.cards.documentation.linkText}</span>
 
@@ -259,7 +259,7 @@ function StubNotFound(props) {
                   props.cardLinkClass ||
                   "" + " a"
                 }
-                href={props.blogCardLink || "/"}
+                href={props.blogCardLink || DEFAULTS.homeUrl}
               >
                 <span>{DEFAULTS.cards.blog.linkText}</span>
 
@@ -332,7 +332,7 @@ function StubNotFound(props) {
                   props.cardLinkClass ||
                   "" + " a"
                 }
-                href={props.faqCardLink || "/"}
+                href={props.faqCardLink || DEFAULTS.homeUrl}
               >
                 <span>{DEFAULTS.cards.questions.linkText}</span>
 

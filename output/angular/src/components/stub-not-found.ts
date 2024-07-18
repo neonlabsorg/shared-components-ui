@@ -38,7 +38,7 @@ const DEFAULTS = {
       linkHref: "",
     },
   },
-  redirectUrl: "/",
+  homeUrl: "/",
 };
 
 @Component({
@@ -138,7 +138,7 @@ const DEFAULTS = {
 
             <a
               [class]="customClassList?.card?.link || cardLinkClass || '' + ' a'"
-              [attr.href]="docsCardLink || '/'"
+              [attr.href]="docsCardLink || DEFAULTS.homeUrl"
             >
               <span>{{DEFAULTS.cards.documentation.linkText}}</span>
 
@@ -195,7 +195,7 @@ const DEFAULTS = {
 
             <a
               [class]="customClassList?.card?.link || cardLinkClass || '' + ' a'"
-              [attr.href]="blogCardLink || '/'"
+              [attr.href]="blogCardLink || DEFAULTS.homeUrl"
             >
               <span>{{DEFAULTS.cards.blog.linkText}}</span>
 
@@ -252,7 +252,7 @@ const DEFAULTS = {
 
             <a
               [class]="customClassList?.card?.link || cardLinkClass || '' + ' a'"
-              [attr.href]="faqCardLink || '/'"
+              [attr.href]="faqCardLink || DEFAULTS.homeUrl"
             >
               <span>{{DEFAULTS.cards.questions.linkText}}</span>
 
@@ -466,7 +466,7 @@ export class StubNotFound {
   @Input() faqCardLink: any;
 
   goHome() {
-    window.location.href = this.homeUrl || "/";
+    window.location.href = this.homeUrl || DEFAULTS.homeUrl;
   }
   goBack() {
     history.back();

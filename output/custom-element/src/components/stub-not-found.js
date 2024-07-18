@@ -33,7 +33,7 @@ const DEFAULTS = {
       linkHref: "",
     },
   },
-  redirectUrl: "/",
+  homeUrl: "/",
 };
 
 /**
@@ -53,7 +53,7 @@ class StubNotFound extends HTMLElement {
 
     this.state = {
       goHome() {
-        window.location.href = self.props.homeUrl || "/";
+        window.location.href = self.props.homeUrl || DEFAULTS.homeUrl;
       },
       goBack() {
         history.back();
@@ -668,7 +668,7 @@ class StubNotFound extends HTMLElement {
           this.props.customClassList?.card?.link ||
           this.props.cardLinkClass ||
           "" + " a-stub-not-found";
-        el.setAttribute("href", this.props.docsCardLink || "/");
+        el.setAttribute("href", this.props.docsCardLink || DEFAULTS.homeUrl);
       });
 
     this._root
@@ -723,7 +723,7 @@ class StubNotFound extends HTMLElement {
           this.props.customClassList?.card?.link ||
           this.props.cardLinkClass ||
           "" + " a-stub-not-found";
-        el.setAttribute("href", this.props.blogCardLink || "/");
+        el.setAttribute("href", this.props.blogCardLink || DEFAULTS.homeUrl);
       });
 
     this._root
@@ -778,7 +778,7 @@ class StubNotFound extends HTMLElement {
           this.props.customClassList?.card?.link ||
           this.props.cardLinkClass ||
           "" + " a-stub-not-found";
-        el.setAttribute("href", this.props.faqCardLink || "/");
+        el.setAttribute("href", this.props.faqCardLink || DEFAULTS.homeUrl);
       });
 
     this._root

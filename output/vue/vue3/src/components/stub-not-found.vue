@@ -137,7 +137,7 @@
                 customClassList?.card?.link || cardLinkClass || '' + ' a'
               )
             "
-            :href="docsCardLink || '/'"
+            :href="docsCardLink || DEFAULTS.homeUrl"
           >
             <span>{{ DEFAULTS.cards.documentation.linkText }}</span>
             <svg
@@ -209,7 +209,7 @@
                 customClassList?.card?.link || cardLinkClass || '' + ' a'
               )
             "
-            :href="blogCardLink || '/'"
+            :href="blogCardLink || DEFAULTS.homeUrl"
           >
             <span>{{ DEFAULTS.cards.blog.linkText }}</span>
             <svg
@@ -281,7 +281,7 @@
                 customClassList?.card?.link || cardLinkClass || '' + ' a'
               )
             "
-            :href="faqCardLink || '/'"
+            :href="faqCardLink || DEFAULTS.homeUrl"
           >
             <span>{{ DEFAULTS.cards.questions.linkText }}</span>
             <svg
@@ -344,7 +344,7 @@ const DEFAULTS = {
       linkHref: "",
     },
   },
-  redirectUrl: "/",
+  homeUrl: "/",
 };
 
 export default defineComponent({
@@ -374,7 +374,7 @@ export default defineComponent({
 
   methods: {
     goHome() {
-      window.location.href = this.homeUrl || "/";
+      window.location.href = this.homeUrl || DEFAULTS.homeUrl;
     },
     goBack() {
       history.back();

@@ -76,13 +76,13 @@ const DEFAULTS = {
       linkHref: ''
     }
   },
-  redirectUrl: '/',
+  homeUrl: '/',
 }
 
 export default function StubNotFound(props: NotFoundPageProps) {
   const state = useStore<StoreProps>({
     goHome: () => {
-      window.location.href = props.homeUrl || '/'
+      window.location.href = props.homeUrl || DEFAULTS.homeUrl
     },
     goBack: () => {
       history.back()
@@ -240,7 +240,7 @@ export default function StubNotFound(props: NotFoundPageProps) {
                 fontWeight: '600',
                 color: '#CECFD2'
               }}
-              href={props.docsCardLink || '/'}
+              href={props.docsCardLink || DEFAULTS.homeUrl}
             >
               <span>{DEFAULTS.cards.documentation.linkText}</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -289,7 +289,7 @@ export default function StubNotFound(props: NotFoundPageProps) {
                 fontWeight: '600',
                 color: '#CECFD2'
               }}
-              href={props.blogCardLink || '/'}
+              href={props.blogCardLink || DEFAULTS.homeUrl}
             >
               <span>{DEFAULTS.cards.blog.linkText}</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -338,7 +338,7 @@ export default function StubNotFound(props: NotFoundPageProps) {
                 fontWeight: '600',
                 color: '#CECFD2'
               }}
-              href={props.faqCardLink || '/'}
+              href={props.faqCardLink || DEFAULTS.homeUrl}
             >
               <span>{DEFAULTS.cards.questions.linkText}</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
