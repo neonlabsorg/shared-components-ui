@@ -132,12 +132,12 @@
             {{ DEFAULTS.cards.documentation.description }}
           </div>
           <a
-            href="*"
             :class="
               _classStringToObject(
                 customClassList?.card?.link || cardLinkClass || '' + ' a'
               )
             "
+            :href="docsCardLink || '/'"
           >
             <span>{{ DEFAULTS.cards.documentation.linkText }}</span>
             <svg
@@ -204,12 +204,12 @@
             {{ DEFAULTS.cards.blog.description }}
           </div>
           <a
-            href="*"
             :class="
               _classStringToObject(
                 customClassList?.card?.link || cardLinkClass || '' + ' a'
               )
             "
+            :href="blogCardLink || '/'"
           >
             <span>{{ DEFAULTS.cards.blog.linkText }}</span>
             <svg
@@ -276,12 +276,12 @@
             {{ DEFAULTS.cards.questions.description }}
           </div>
           <a
-            href="*"
             :class="
               _classStringToObject(
                 customClassList?.card?.link || cardLinkClass || '' + ' a'
               )
             "
+            :href="faqCardLink || '/'"
           >
             <span>{{ DEFAULTS.cards.questions.linkText }}</span>
             <svg
@@ -351,6 +351,7 @@ export default defineComponent({
   name: "stub-not-found",
 
   props: [
+    "homeUrl",
     "customClassList",
     "containerClass",
     "headingContainerClass",
@@ -362,6 +363,9 @@ export default defineComponent({
     "cardTitleClass",
     "cardDescriptionClass",
     "cardLinkClass",
+    "docsCardLink",
+    "blogCardLink",
+    "faqCardLink",
   ],
 
   data() {
@@ -370,7 +374,7 @@ export default defineComponent({
 
   methods: {
     goHome() {
-      window.location.href = "/";
+      window.location.href = this.homeUrl || "/";
     },
     goBack() {
       history.back();
@@ -479,12 +483,8 @@ export default defineComponent({
 .div-7 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  padding: 0 1.5rem;
   gap: 2rem;
-}
-@media (max-width: 992px) {
-  .div-7 {
-    padding: 0 1.5rem;
-  }
 }
 @media (max-width: 600px) {
   .div-7 {

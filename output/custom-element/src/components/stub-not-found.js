@@ -53,7 +53,7 @@ class StubNotFound extends HTMLElement {
 
     this.state = {
       goHome() {
-        window.location.href = "/";
+        window.location.href = self.props.homeUrl || "/";
       },
       goBack() {
         history.back();
@@ -64,6 +64,7 @@ class StubNotFound extends HTMLElement {
     }
 
     this.componentProps = [
+      "homeUrl",
       "customClassList",
       "containerClass",
       "headingContainerClass",
@@ -75,6 +76,9 @@ class StubNotFound extends HTMLElement {
       "cardTitleClass",
       "cardDescriptionClass",
       "cardLinkClass",
+      "docsCardLink",
+      "blogCardLink",
+      "faqCardLink",
     ];
 
     // used to keep track of all nodes created by show/for
@@ -202,7 +206,7 @@ class StubNotFound extends HTMLElement {
                 </template>
               </div>
       
-              <a href="*" data-el="a-stub-not-found-1">
+              <a data-el="a-stub-not-found-1">
                 <span>
                   <template data-el="div-stub-not-found-12">
                     <!-- DEFAULTS.cards.documentation.linkText -->
@@ -258,7 +262,7 @@ class StubNotFound extends HTMLElement {
                 </template>
               </div>
       
-              <a href="*" data-el="a-stub-not-found-2">
+              <a data-el="a-stub-not-found-2">
                 <span>
                   <template data-el="div-stub-not-found-18">
                     <!-- DEFAULTS.cards.blog.linkText -->
@@ -314,7 +318,7 @@ class StubNotFound extends HTMLElement {
                 </template>
               </div>
       
-              <a href="*" data-el="a-stub-not-found-3">
+              <a data-el="a-stub-not-found-3">
                 <span>
                   <template data-el="div-stub-not-found-24">
                     <!-- DEFAULTS.cards.questions.linkText -->
@@ -430,12 +434,8 @@ class StubNotFound extends HTMLElement {
         .div-stub-not-found-7 {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
+          padding: 0 1.5rem;
           gap: 2rem;
-        }
-        @media (max-width: 992px) {
-          .div-stub-not-found-7 {
-            padding: 0 1.5rem;
-          }
         }
         @media (max-width: 600px) {
           .div-stub-not-found-7 {
@@ -668,6 +668,7 @@ class StubNotFound extends HTMLElement {
           this.props.customClassList?.card?.link ||
           this.props.cardLinkClass ||
           "" + " a-stub-not-found";
+        el.setAttribute("href", this.props.docsCardLink || "/");
       });
 
     this._root
@@ -722,6 +723,7 @@ class StubNotFound extends HTMLElement {
           this.props.customClassList?.card?.link ||
           this.props.cardLinkClass ||
           "" + " a-stub-not-found";
+        el.setAttribute("href", this.props.blogCardLink || "/");
       });
 
     this._root
@@ -776,6 +778,7 @@ class StubNotFound extends HTMLElement {
           this.props.customClassList?.card?.link ||
           this.props.cardLinkClass ||
           "" + " a-stub-not-found";
+        el.setAttribute("href", this.props.faqCardLink || "/");
       });
 
     this._root

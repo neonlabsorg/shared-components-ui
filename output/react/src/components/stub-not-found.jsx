@@ -41,7 +41,7 @@ const DEFAULTS = {
 
 function StubNotFound(props) {
   function goHome() {
-    window.location.href = "/";
+    window.location.href = props.homeUrl || "/";
   }
 
   function goBack() {
@@ -181,12 +181,12 @@ function StubNotFound(props) {
               </div>
 
               <a
-                href="*"
                 className={
                   props.customClassList?.card?.link ||
                   props.cardLinkClass ||
                   "" + " a"
                 }
+                href={props.docsCardLink || "/"}
               >
                 <span>{DEFAULTS.cards.documentation.linkText}</span>
 
@@ -254,12 +254,12 @@ function StubNotFound(props) {
               </div>
 
               <a
-                href="*"
                 className={
                   props.customClassList?.card?.link ||
                   props.cardLinkClass ||
                   "" + " a"
                 }
+                href={props.blogCardLink || "/"}
               >
                 <span>{DEFAULTS.cards.blog.linkText}</span>
 
@@ -327,12 +327,12 @@ function StubNotFound(props) {
               </div>
 
               <a
-                href="*"
                 className={
                   props.customClassList?.card?.link ||
                   props.cardLinkClass ||
                   "" + " a"
                 }
+                href={props.faqCardLink || "/"}
               >
                 <span>{DEFAULTS.cards.questions.linkText}</span>
 
@@ -445,12 +445,8 @@ function StubNotFound(props) {
         .div-7 {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
+          padding: 0 1.5rem;
           gap: 2rem;
-        }
-        @media (max-width: 992px) {
-          .div-7 {
-            padding: 0 1.5rem;
-          }
         }
         @media (max-width: 600px) {
           .div-7 {

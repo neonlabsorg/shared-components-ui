@@ -1,4 +1,4 @@
-import { onMount, useStore } from "@builder.io/mitosis"
+import { useStore } from "@builder.io/mitosis"
 
 /*
 *
@@ -19,6 +19,10 @@ export interface NotFoundPageProps {
   cardTitleClass?: string
   cardDescriptionClass?: string
   cardLinkClass?: string
+  homeUrl?: string
+  docsCardLink?: string
+  blogCardLink?: string
+  faqCardLink?: string
 }
 
 type ClassList = {
@@ -78,7 +82,7 @@ const DEFAULTS = {
 export default function StubNotFound(props: NotFoundPageProps) {
   const state = useStore<StoreProps>({
     goHome: () => {
-      window.location.href = '/'
+      window.location.href = props.homeUrl || '/'
     },
     goBack: () => {
       history.back()
@@ -188,10 +192,8 @@ export default function StubNotFound(props: NotFoundPageProps) {
         <div css={{ 
           display: 'grid', 
           gridTemplateColumns: 'repeat(3, 1fr)', 
+          padding: '0 1.5rem',
           gap: '2rem',
-          '@media (max-width: 992px)': {
-            padding: '0 1.5rem',
-          },
           '@media (max-width: 600px)': {
             display: 'flex',
             flexDirection: 'column',
@@ -238,7 +240,7 @@ export default function StubNotFound(props: NotFoundPageProps) {
                 fontWeight: '600',
                 color: '#CECFD2'
               }}
-              href="*"
+              href={props.docsCardLink || '/'}
             >
               <span>{DEFAULTS.cards.documentation.linkText}</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -287,7 +289,7 @@ export default function StubNotFound(props: NotFoundPageProps) {
                 fontWeight: '600',
                 color: '#CECFD2'
               }}
-              href="*"
+              href={props.blogCardLink || '/'}
             >
               <span>{DEFAULTS.cards.blog.linkText}</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -336,7 +338,7 @@ export default function StubNotFound(props: NotFoundPageProps) {
                 fontWeight: '600',
                 color: '#CECFD2'
               }}
-              href="*"
+              href={props.faqCardLink || '/'}
             >
               <span>{DEFAULTS.cards.questions.linkText}</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">

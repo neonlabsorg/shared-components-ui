@@ -137,8 +137,8 @@ const DEFAULTS = {
             </div>
 
             <a
-              href="*"
               [class]="customClassList?.card?.link || cardLinkClass || '' + ' a'"
+              [attr.href]="docsCardLink || '/'"
             >
               <span>{{DEFAULTS.cards.documentation.linkText}}</span>
 
@@ -194,8 +194,8 @@ const DEFAULTS = {
             </div>
 
             <a
-              href="*"
               [class]="customClassList?.card?.link || cardLinkClass || '' + ' a'"
+              [attr.href]="blogCardLink || '/'"
             >
               <span>{{DEFAULTS.cards.blog.linkText}}</span>
 
@@ -251,8 +251,8 @@ const DEFAULTS = {
             </div>
 
             <a
-              href="*"
               [class]="customClassList?.card?.link || cardLinkClass || '' + ' a'"
+              [attr.href]="faqCardLink || '/'"
             >
               <span>{{DEFAULTS.cards.questions.linkText}}</span>
 
@@ -367,12 +367,8 @@ const DEFAULTS = {
       .div-7 {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
+        padding: 0 1.5rem;
         gap: 2rem;
-      }
-      @media (max-width: 992px) {
-        .div-7 {
-          padding: 0 1.5rem;
-        }
       }
       @media (max-width: 600px) {
         .div-7 {
@@ -453,6 +449,7 @@ const DEFAULTS = {
 export class StubNotFound {
   DEFAULTS = DEFAULTS;
 
+  @Input() homeUrl: any;
   @Input() customClassList: any;
   @Input() containerClass: any;
   @Input() headingContainerClass: any;
@@ -464,9 +461,12 @@ export class StubNotFound {
   @Input() cardTitleClass: any;
   @Input() cardDescriptionClass: any;
   @Input() cardLinkClass: any;
+  @Input() docsCardLink: any;
+  @Input() blogCardLink: any;
+  @Input() faqCardLink: any;
 
   goHome() {
-    window.location.href = "/";
+    window.location.href = this.homeUrl || "/";
   }
   goBack() {
     history.back();
